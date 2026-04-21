@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Roadtrip 🇹🇭">
+<title>Roadtrip Thaïlande 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&family=Bubblegum+Sans&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#e8e8e8;display:flex;justify-content:center;}
+.app{background:#2BBFB3;width:100%;max-width:430px;min-height:100vh;}
+.hdr{background:#1FA99E;padding:18px 18px 0;position:sticky;top:0;z-index:10;}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.logo{font-family:'Bubblegum Sans',cursive;font-size:26px;color:white;text-shadow:2px 3px 0 rgba(0,0,0,0.12);}
+.logo span{color:#FFD93D;}
+.logo-sub{font-size:11px;color:rgba(255,255,255,0.7);font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-top:2px;}
+.prog{background:rgba(255,255,255,0.15);border-radius:20px;padding:3px 10px;font-size:11px;color:white;font-weight:700;white-space:nowrap;}
+.mtabs{display:flex;overflow-x:auto;scrollbar-width:none;margin:0 -18px;padding:0 18px;}
+.mtabs::-webkit-scrollbar{display:none;}
+.mtab{flex-shrink:0;padding:9px 14px 11px;font-size:12px;font-weight:700;color:rgba(255,255,255,0.5);cursor:pointer;border-bottom:3px solid transparent;background:none;border-left:none;border-right:none;border-top:none;font-family:'Nunito',sans-serif;white-space:nowrap;transition:all .2s;}
+.mtab.active{color:#FFD93D;border-bottom-color:#FFD93D;}
+.content{padding:14px;}
+/* City tabs */
+.ctabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.ctab{font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;cursor:pointer;border:1.5px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.65);background:rgba(255,255,255,0.1);font-family:'Nunito',sans-serif;transition:all .2s;}
+.ctab.active{background:white;color:#1FA99E;border-color:white;}
+/* Summary */
+.sumbar{background:rgba(255,255,255,0.15);border-radius:16px;padding:12px;margin-bottom:12px;display:flex;justify-content:space-around;align-items:center;}
+.sv{font-family:'Bubblegum Sans',cursive;font-size:22px;color:#FFD93D;line-height:1;text-align:center;}
+.sl{font-size:10px;color:rgba(255,255,255,0.7);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;text-align:center;}
+.sdiv{width:1px;height:32px;background:rgba(255,255,255,0.2);}
+/* Hotel banner */
+.hbanner{background:rgba(255,255,255,0.18);border-radius:12px;padding:10px 14px;margin-bottom:10px;display:flex;align-items:center;gap:10px;cursor:pointer;}
+.hname{font-size:13px;font-weight:800;color:white;}
+.hsub{font-size:10px;color:rgba(255,255,255,0.7);font-weight:600;margin-top:1px;}
+.harr{font-size:14px;color:rgba(255,255,255,0.6);transition:transform .2s;margin-left:auto;flex-shrink:0;}
+.harr.op{transform:rotate(90deg);}
+.hdetail{display:none;background:white;border-radius:0 0 12px 12px;padding:0;margin-top:-6px;margin-bottom:8px;overflow:hidden;}
+.hdetail.op{display:block;}
+.hrow{display:flex;align-items:flex-start;gap:10px;padding:9px 14px;border-bottom:1px dashed #E8F5F4;}
+.hrow:last-child{border-bottom:none;}
+.hrow-icon{width:26px;height:26px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:1px;}
+.hrow-body{flex:1;}
+.hrow-label{font-size:10px;color:#7A9A98;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.hrow-val{font-size:12px;font-weight:800;color:#1A3A3A;margin-top:2px;line-height:1.4;}
+.hrow-val.green{color:#27AE60;}
+.hrow-val.red{color:#E74C3C;}
+.mbtn{display:inline-block;margin-top:6px;background:#2BBFB3;color:white;font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;cursor:pointer;border:none;font-family:'Nunito',sans-serif;text-decoration:none;}
+/* Day cards */
+.dcard{background:white;border-radius:16px;margin-bottom:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,0.08);}
+.dhead{display:flex;align-items:center;gap:12px;padding:12px 14px;cursor:pointer;user-select:none;}
+.dbadge{width:42px;height:42px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;}
+.dbadge .n{font-family:'Bubblegum Sans',cursive;font-size:18px;color:white;line-height:1;}
+.dbadge .m{font-size:9px;color:rgba(255,255,255,0.85);font-weight:700;text-transform:uppercase;}
+.dinfo{flex:1;min-width:0;}
+.dcity{font-size:14px;font-weight:800;color:#1A3A3A;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.dtheme{font-size:11px;color:#7A9A98;margin-top:1px;font-weight:600;}
+.dchev{font-size:16px;color:#B0CECE;transition:transform .2s;}
+.dchev.op{transform:rotate(90deg);}
+.dsteps{display:none;padding:4px 14px 14px;border-top:1.5px dashed #E8F5F4;}
+.dsteps.op{display:block;}
+/* Steps */
+.step{display:flex;gap:10px;padding:9px 0;border-bottom:1px dashed #F0F8F7;align-items:flex-start;}
+.step:last-child{border-bottom:none;}
+.sleft{display:flex;flex-direction:column;align-items:center;width:38px;flex-shrink:0;padding-top:2px;}
+.stime{font-size:10px;color:#7A9A98;font-weight:700;}
+.sicon{width:30px;height:30px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:15px;margin:4px 0 2px;}
+.sline{width:2px;flex:1;min-height:8px;background:#E8F5F4;border-radius:2px;}
+.sbody{flex:1;}
+.sname{font-size:13px;font-weight:800;color:#1A3A3A;line-height:1.3;}
+.sdesc{font-size:11px;color:#7A9A98;margin-top:3px;line-height:1.4;font-weight:600;}
+.stags{display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;}
+.tag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;}
+.tor{background:#FFF0CC;color:#D4840A;}.tre{background:#FFE8E8;color:#C0392B;}.tte{background:#E0F5F3;color:#1A9088;}.tgr{background:#E5F8E0;color:#27AE60;}.tpu{background:#F0EAFE;color:#7B4FD9;}
+/* Address accordion */
+.arow{display:flex;align-items:center;gap:6px;margin-top:6px;cursor:pointer;}
+.aarr{font-size:11px;color:#2BBFB3;transition:transform .2s;font-weight:700;line-height:1;}
+.aarr.op{transform:rotate(90deg);}
+.adetail{display:none;background:#F0FFFE;border-radius:8px;padding:8px 10px;margin-top:5px;}
+.adetail.op{display:block;}
+.atext{font-size:11px;color:#3A6B68;font-weight:600;line-height:1.5;}
+.amaps{display:inline-block;margin-top:6px;background:#2BBFB3;color:white;font-size:10px;font-weight:700;padding:4px 12px;border-radius:20px;cursor:pointer;border:none;font-family:'Nunito',sans-serif;text-decoration:none;}
+/* Checkbox */
+.chk{width:24px;height:24px;border-radius:8px;border:2px solid #D5EEEC;background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:13px;color:transparent;transition:all .15s;font-family:'Nunito',sans-serif;}
+.chk.done{background:#2BBFB3;border-color:#2BBFB3;color:white;}
+.step.done .sname{text-decoration:line-through;color:#B0CECE;}
+.tip{background:#FFF9E6;border-left:4px solid #FFD93D;border-radius:0 10px 10px 0;padding:8px 12px;margin:8px 0 4px;font-size:11px;color:#8B6914;font-weight:600;line-height:1.5;}
+/* Coming soon */
+.coming{background:white;border-radius:16px;padding:32px 20px;text-align:center;box-shadow:0 3px 12px rgba(0,0,0,0.08);}
+.ctitle2{font-family:'Bubblegum Sans',cursive;font-size:18px;color:#1A3A3A;margin-bottom:6px;}
+.csub{font-size:12px;color:#7A9A98;font-weight:600;margin-bottom:16px;line-height:1.5;}
+/* Transport styles */
+.tsec{font-family:'Bubblegum Sans',cursive;font-size:15px;color:white;margin:14px 0 10px;display:flex;align-items:center;gap:6px;}
+.tsec:first-child{margin-top:4px;}
+.tcard{background:white;border-radius:16px;margin-bottom:10px;overflow:hidden;box-shadow:0 3px 12px rgba(0,0,0,0.08);}
+.tchdr{padding:11px 14px 9px;display:flex;align-items:center;justify-content:space-between;border-bottom:1.5px dashed #E8F5F4;}
+.ttribe{display:flex;align-items:center;gap:8px;}
+.ticon2{width:32px;height:32px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.tname2{font-size:13px;font-weight:800;color:#1A3A3A;}
+.tsub2b{font-size:10px;color:#7A9A98;font-weight:600;}
+.tnum{font-size:11px;font-weight:700;color:#1A9088;background:#E0F5F3;padding:3px 9px;border-radius:20px;white-space:nowrap;}
+.troute{padding:12px 14px;display:flex;align-items:center;}
+.tcity{flex:1;}
+.tcity.r{text-align:right;}
+.tcode{font-family:'Bubblegum Sans',cursive;font-size:22px;color:#1A3A3A;line-height:1;}
+.tcname{font-size:10px;color:#7A9A98;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.ttime{font-size:14px;font-weight:800;color:#2BBFB3;margin-top:3px;}
+.tdate{font-size:10px;color:#7A9A98;font-weight:600;}
+.tmid{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:0 4px;}
+.tdur{font-size:10px;color:#7A9A98;font-weight:700;}
+.tlw{display:flex;align-items:center;width:100%;gap:3px;}
+.tl{flex:1;height:1.5px;background:#D5EEEC;}
+.tp{font-size:14px;}
+.tstop{font-size:10px;color:#FF6B6B;font-weight:700;background:#FFE8E8;padding:2px 7px;border-radius:20px;margin-top:2px;}
+.tfoot{padding:8px 14px 11px;border-top:1.5px dashed #E8F5F4;display:flex;gap:6px;flex-wrap:wrap;align-items:center;}
+.tbkg{font-size:10px;color:#7A9A98;font-weight:600;font-style:italic;}
+.trhhdr{background:#3D5A80;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;}
+.trhlbl{font-family:'Bubblegum Sans',cursive;font-size:14px;color:white;}
+.trhnum{font-size:11px;font-weight:700;color:rgba(255,255,255,0.6);background:rgba(255,255,255,0.1);padding:3px 9px;border-radius:20px;}
+.irow{display:flex;padding:10px 14px;gap:8px;border-bottom:1.5px dashed #E8F5F4;align-items:center;}
+.irow:last-child{border-bottom:none;}
+.iic{font-size:18px;flex-shrink:0;}
+.ib{flex:1;}
+.ilbl{font-size:10px;color:#7A9A98;font-weight:700;text-transform:uppercase;letter-spacing:.5px;}
+.ival{font-size:13px;font-weight:800;color:#1A3A3A;margin-top:1px;}
+.ival.hi{color:#2BBFB3;}
+.pnr{font-size:10px;color:#7A9A98;background:#F5F5F5;padding:2px 8px;border-radius:20px;font-weight:700;}
+</style>
+</head>
+<body>
+<div class="app">
+<div class="hdr">
+  <div class="hdr-top">
+    <div><div class="logo">Road<span>trip</span> 🇹🇭</div><div class="logo-sub">24 avril — 10 mai 2026</div></div>
+    <div class="prog" id="prog">0 / 30</div>
+  </div>
+  <div class="mtabs">
+    <button class="mtab active" onclick="showMain('prog',this)">Programme</button>
+    <button class="mtab" onclick="showMain('transport',this)">Transports</button>
+  </div>
+</div>
+<div class="content" id="content"></div>
+</div>
+
+<script>
+var CK={};
+var TOTAL_STEPS=67;
+
+var HOTELS={
+  bkk:{
+    name:'Time Sabai Hotel',
+    dates:'24 — 27 avril 2026', nuits:'3 nuits',
+    breakfast:false, booking:'#6335109271',
+    addr:'134/6 Soi Rambuttri, Banglamphu, Bangkok 10200',
+    maps:'https://maps.google.com/?q=Time+Sabai+Hotel+134+Soi+Rambuttri+Bangkok'
+  },
+  cnx:{
+    name:'Chada Mantra Hotel',
+    dates:'28 — 30 avril 2026', nuits:'2 nuits',
+    breakfast:false, booking:null,
+    addr:'13/1 Nimmanhaemin Rd, Suthep, Mueang, Chiang Mai 50200',
+    maps:'https://maps.google.com/?q=Chada+Mantra+Hotel+Nimman+Chiang+Mai'
+  },
+  skt:{
+    name:'Le Charme Sukhothai Historical Park',
+    dates:'30 avril — 2 mai 2026', nuits:'2 nuits',
+    breakfast:true, booking:null,
+    addr:'149 Moo 3, Mueang Kao, Sukhothai 64210',
+    maps:'https://maps.google.com/?q=Le+Charme+Sukhothai+Historical+Park'
+  },
+  uth:{
+    name:'V House Ayutthaya',
+    dates:'2 — 3 mai 2026', nuits:'1 nuit',
+    breakfast:true, booking:null,
+    addr:'20/5 Moo 4, Tha Wasukri, Phra Nakhon Si Ayutthaya 13000',
+    maps:'https://maps.google.com/?q=V+House+Ayutthaya'
+  },
+  usm:{
+    name:'Airbnb Koh Samui',
+    dates:'3 — 8 mai 2026', nuits:'5 nuits',
+    breakfast:false, booking:'Airbnb',
+    addr:'Koh Samui, Surat Thani 84320',
+    maps:'https://maps.google.com/?q=Koh+Samui+Thailand'
+  },
+  bkk2:{
+    name:'The Park Nine Suvarnabhumi',
+    dates:'8 — 9 mai 2026', nuits:'1 nuit',
+    breakfast:false, booking:null,
+    addr:'99 Moo 6, Bang Phli, Samut Prakan 10540',
+    maps:'https://maps.google.com/?q=The+Park+Nine+Hotel+Suvarnabhumi+Bangkok'
+  }
+};
+
+var CITIES_DATA={
+  bkk:{
+    label:'Bangkok', hotel:'bkk', jours:4, etapes:0,
+    days:[
+      {date:'24',m:'AVR',col:'#FF6B6B',city:'Bangkok — arrivée',theme:'Premier soir · Chinatown & néons',
+       tip:'💡 MRT Wat Mangkon pour Chinatown — rapide et climatisé !',
+       steps:[
+        {t:'14h00',i:'🏨',bg:'#FFE8E8',n:'Arrivée Bangkok — check-in',d:'Arrivée vol international. Check-in Time Sabai Hotel.',a:'134/6 Soi Rambuttri, Banglamphu, Bangkok 10200',m:'https://maps.google.com/?q=Time+Sabai+Hotel+Bangkok',tags:[['arrivée','tte']]},
+        {t:'16h00',i:'🏮',bg:'#FFF0CC',n:'Chinatown / Yaowarat Road',d:'Balade dans le quartier chinois. Ruelles, temples cachés, ambiance locale.',a:'Yaowarat Rd, Samphanthawong, Bangkok 10100',m:'https://maps.google.com/?q=Yaowarat+Road+Bangkok',tags:[['balade','tgr']]},
+        {t:'18h30',i:'🍜',bg:'#E5F8E0',n:'Street food & marchés de rue',d:'Pad thaï, canard laqué, fruits tropicaux. L\'une des meilleures street food d\'Asie !',a:'Yaowarat Rd, Samphanthawong, Bangkok 10100',m:'https://maps.google.com/?q=Yaowarat+Road+Bangkok',tags:[['street food','tor']]},
+        {t:'20h30',i:'🍹',bg:'#F0EAFE',n:'Rooftop bar — vue sur la ville',d:'Mahanakhon SkyWalk (314m) ou Hannibal Bar (Chinatown). Vue splendide au coucher du soleil.',a:'Mahanakhon, King Power, Sathorn, Bangkok 10120',m:'https://maps.google.com/?q=Mahanakhon+SkyWalk+Bangkok',tags:[['rooftop','tpu'],['vue','tor']]}
+       ]},
+      {date:'25',m:'AVR',col:'#FFB347',city:'Bangkok — temples & fleuve',theme:'Grand Palais · Wat Pho · Wat Arun',
+       tip:'💡 Arriver au Grand Palais dès 8h30 — la foule triple avant 10h ! Tenue couverte obligatoire.',
+       steps:[
+        {t:'8h30',i:'👑',bg:'#FFF0CC',n:'Grand Palais & Wat Phra Kaew',d:'Bouddha d\'Émeraude. Visite guidée. 500 bahts. Épaules + genoux couverts.',a:'Na Phra Lan Rd, Phra Borom Maha Ratchawang, Bangkok 10200',m:'https://maps.google.com/?q=Grand+Palace+Bangkok',tags:[['incontournable','tre'],['500 bahts','tor']]},
+        {t:'11h00',i:'🛕',bg:'#FFE8E8',n:'Wat Pho — Bouddha couché 46m',d:'Plantes des pieds incrustées de nacre. Massage thaï authentique sur place ~300 bahts.',a:'2 Sanam Chai Rd, Phra Borom Maha Ratchawang, Bangkok 10200',m:'https://maps.google.com/?q=Wat+Pho+Bangkok',tags:[['temple','tre'],['massage','tgr']]},
+        {t:'13h30',i:'🛶',bg:'#E0F5F3',n:'Balade khlongs — bateau privé',d:'Canaux de Thonburi, maisons sur pilotis, vie locale. ~800 bahts/h.',a:'Tha Tien Pier, Thai Wang Rd, Bangkok 10200',m:'https://maps.google.com/?q=Tha+Tien+Pier+Bangkok',tags:[['canaux','tte'],['local','tgr']]},
+        {t:'15h30',i:'⛵',bg:'#E0F5F3',n:'Ferry → Wat Arun',d:'5 bahts depuis Tha Tien. Le prang de 80m recouvert de mosaïques de porcelaine.',a:'158 Thanon Wang Doem, Wat Arun, Bangkok Yai 10600',m:'https://maps.google.com/?q=Wat+Arun+Bangkok',tags:[['temple','tre'],['bateau','tte']]},
+        {t:'17h30',i:'💆',bg:'#E5F8E0',n:'Massage thaï au Wat Pho',d:'École de massage traditionnelle. 1h ~420 bahts. Réserver à l\'avance.',a:'2 Sanam Chai Rd, Phra Borom Maha Ratchawang, Bangkok 10200',m:'https://maps.google.com/?q=Wat+Pho+Massage+Bangkok',tags:[['massage','tgr']]}
+       ]},
+      {date:'26',m:'AVR',col:'#6BCB77',city:'Bangkok — marché & shopping',theme:'Marché flottant · Khao San · Massage',
+       tip:'💡 Départ 6h TRÈS tôt pour Damnoen Saduak — retour avant midi pour Khao San Road.',
+       steps:[
+        {t:'6h00',i:'🛶',bg:'#E0F5F3',n:'Marché flottant Damnoen Saduak',d:'Départ 6h. Marché emblématique sur les canaux. Ouvert jusqu\'à 14h.',a:'Damnoen Saduak, Ratchaburi 70130',m:'https://maps.google.com/?q=Damnoen+Saduak+Floating+Market',tags:[['marché','tgr'],['départ 6h','tre']]},
+        {t:'11h00',i:'🛍️',bg:'#F0EAFE',n:'Khao San Road — shopping',d:'Souvenirs, vêtements, street food. La rue des backpackers de Bangkok.',a:'Khao San Rd, Phra Nakhon, Bangkok 10200',m:'https://maps.google.com/?q=Khao+San+Road+Bangkok',tags:[['shopping','tpu'],['street food','tor']]},
+        {t:'14h00',i:'💆',bg:'#E5F8E0',n:'Massage thaï',d:'1h à 2h de massage traditionnel. Nombreux salons autour de Khao San.',a:'Khao San Rd, Phra Nakhon, Bangkok 10200',m:'https://maps.google.com/?q=Khao+San+Road+Bangkok',tags:[['massage','tgr']]},
+        {t:'19h00',i:'🧳',bg:'#FFE8E8',n:'Dîner & préparation bagages',d:'Dîner en ville. Préparer les bagages pour le train de nuit demain soir.',a:'134/6 Soi Rambuttri, Banglamphu, Bangkok 10200',m:'https://maps.google.com/?q=Time+Sabai+Hotel+Bangkok',tags:[['préparat.','tte']]}
+       ]},
+      {date:'27',m:'AVR',col:'#4ECDC4',city:'Bangkok → Chiang Mai',theme:'Visite libre · Train de nuit 18h40',
+       tip:'⚠️ Train départ 18h40 FIXE — être à la gare à 17h30 MAX !',
+       steps:[
+        {t:'9h00',i:'🗺️',bg:'#FFF0CC',n:'Visite libre Bangkok',d:'Musées, temples, shopping selon envies. Quartier Silom ou Sukhumvit.',a:'Bangkok, Thailand',m:'https://maps.google.com/?q=Silom+Bangkok',tags:[['libre','tgr']]},
+        {t:'12h30',i:'🍽️',bg:'#E5F8E0',n:'Déjeuner Silom ou Sukhumvit',d:'Quartiers modernes de Bangkok. Nombreux restaurants et food courts.',a:'Silom Rd, Silom, Bang Rak, Bangkok 10500',m:'https://maps.google.com/?q=Silom+Road+Bangkok',tags:[['déjeuner','tor']]},
+        {t:'17h30',i:'🚂',bg:'#E0F5F3',n:'Gare Krung Thep Aphiwat — train de nuit',d:'Départ 18h40 → Chiang Mai 07h15. Couchettes 2e classe réservées.',a:'Krung Thep Aphiwat Station, Bang Sue, Bangkok 10800',m:'https://maps.google.com/?q=Krung+Thep+Aphiwat+Station+Bangkok',tags:[['train','tte'],['18h40','tre']]}
+       ]}
+    ]
+  },
+  cnx:{
+    label:'Chiang Mai', hotel:'cnx', jours:3, etapes:0,
+    days:[
+      {date:'28',m:'AVR',col:'#9B59B6',city:'Chiang Mai — arrivée',theme:'Vieille ville · Doi Suthep · Night Bazaar',
+       tip:'💡 Arrivée 7h15 en train. Check-in tôt si possible sinon consigne à l\'hôtel.',
+       steps:[
+        {t:'7h15',i:'🚂',bg:'#E0F5F3',n:'Arrivée gare Chiang Mai',d:'Depuis le train de nuit. Taxi ou tuk-tuk vers l\'hôtel ~80 bahts.',a:'Charoen Muang Rd, Wiang, Mueang Chiang Mai 50000',m:'https://maps.google.com/?q=Chiang+Mai+Railway+Station',tags:[['arrivée','tte']]},
+        {t:'9h00',i:'🏨',bg:'#FFE8E8',n:'Chada Mantra Hotel — check-in',d:'Nimman Road, quartier branché de Chiang Mai.',a:'13/1 Nimmanhaemin Rd, Suthep, Mueang, Chiang Mai 50200',m:'https://maps.google.com/?q=Chada+Mantra+Hotel+Nimman+Chiang+Mai',tags:[['hôtel','tte']]},
+        {t:'11h00',i:'⛩️',bg:'#FFF0CC',n:'Wat Phra Singh — temple royal',d:'Le plus vénéré de Chiang Mai. Bouddha de style Lanna. Gratuit.',a:'2 Samlarn Rd, Phra Singh, Mueang Chiang Mai 50200',m:'https://maps.google.com/?q=Wat+Phra+Singh+Chiang+Mai',tags:[['temple','tre'],['gratuit','tgr']]},
+        {t:'13h00',i:'🏛️',bg:'#FFE8E8',n:'Wat Chedi Luang — stupa géant',d:'Ruines d\'un stupa de 98m du 14e siècle. Moine disponible pour échange.',a:'103 Prapokkloa Rd, Si Phum, Mueang Chiang Mai 50200',m:'https://maps.google.com/?q=Wat+Chedi+Luang+Chiang+Mai',tags:[['temple','tre'],['histoire','tor']]},
+        {t:'16h00',i:'⛰️',bg:'#E5F8E0',n:'Doi Suthep — vue panoramique',d:'300 marches ou funiculaire ~50 bahts. Vue à 360° sur Chiang Mai.',a:'Doi Suthep-Pui National Park, Chiang Mai 50200',m:'https://maps.google.com/?q=Wat+Phra+That+Doi+Suthep+Chiang+Mai',tags:[['incontournable','tre'],['vue','tor']]},
+        {t:'19h30',i:'🛍️',bg:'#F0EAFE',n:'Night Bazaar — dîner',d:'Artisanat, vêtements, street food. Tous les soirs Chang Klan Road.',a:'Chang Klan Rd, Chang Klan, Mueang Chiang Mai 50100',m:'https://maps.google.com/?q=Night+Bazaar+Chiang+Mai',tags:[['marché','tgr'],['street food','tor']]}
+       ]},
+      {date:'29',m:'AVR',col:'#27AE60',city:'Chiang Mai — éléphants',theme:'Sanctuaire Living Green — journée complète',
+       tip:'🐘 Réservation confirmée : Living Green Elephant Sanctuary · N° EST10238',
+       steps:[
+        {t:'8h00',i:'🐘',bg:'#E5F8E0',n:'Sanctuaire Living Green — journée',d:'Observation éthique, nourrissage, baignade dans la rivière. Réservation EST10238.',a:'Mae Wang District, Chiang Mai 50360',m:'https://maps.google.com/?q=Living+Green+Elephant+Sanctuary+Chiang+Mai',tags:[['réservé','tor'],['EST10238','tpu']]},
+        {t:'19h30',i:'🍜',bg:'#FFF0CC',n:'Night Bazaar — dîner',d:'Spécialités du nord : Khao Soi, Sai Oua (saucisse du nord). Dernier soir à Chiang Mai.',a:'Chang Klan Rd, Chang Klan, Mueang Chiang Mai 50100',m:'https://maps.google.com/?q=Night+Bazaar+Chiang+Mai',tags:[['khao soi','tgr'],['street food','tor']]}
+       ]},
+      {date:'30',m:'AVR',col:'#E67E22',city:'Chiang Mai → Sukhothai',theme:'Sources chaudes · Route en van ~4h30',
+       tip:'💡 Retrait van 9h30 aéroport Chiang Mai · Booking 763820483',
+       steps:[
+        {t:'9h30',i:'🚐',bg:'#E0F5F3',n:'Retrait van — aéroport Chiang Mai',d:'Drive Car Rental. Booking 763820483. Départ vers les sources chaudes.',a:'Chiang Mai International Airport, Mueang Chiang Mai 50200',m:'https://maps.google.com/?q=Chiang+Mai+International+Airport',tags:[['van','tte'],['Booking 763820483','tpu']]},
+        {t:'11h00',i:'♨️',bg:'#FFF0CC',n:'Sources chaudes San Kamphaeng',d:'~40 km au SE de Chiang Mai. Bassins naturels, détente avant la route.',a:'San Kamphaeng Hot Springs, San Kamphaeng, Chiang Mai 50130',m:'https://maps.google.com/?q=San+Kamphaeng+Hot+Springs',tags:[['nature','tgr'],['détente','tte']]},
+        {t:'13h30',i:'🚐',bg:'#E0F5F3',n:'Route Chiang Mai → Sukhothai',d:'~300 km / ~4h30 via route 11. Paysages de rizières et montagnes.',a:'Route 11, Chiang Mai to Sukhothai',m:'https://maps.google.com/?q=Sukhothai+Thailand',tags:[['route','tte'],['~4h30','tor']]},
+        {t:'18h00',i:'🌙',bg:'#F0EAFE',n:'Arrivée Sukhothai — marché nocturne',d:'Installation au Charme Sukhothai. Dîner au marché nocturne de la vieille ville.',a:'149 Moo 3, Mueang Kao, Sukhothai 64210',m:'https://maps.google.com/?q=Le+Charme+Sukhothai+Historical+Park',tags:[['arrivée','tte'],['marché','tgr']]}
+       ]}
+    ]
+  },
+  skt:{
+    label:'Sukhothai', hotel:'skt', jours:2, etapes:0,
+    days:[
+      {date:'1',m:'MAI',col:'#D4AC0D',city:'Sukhothai — parc historique',theme:'Vélo entre les ruines UNESCO',
+       tip:'🚲 Ouvrir à 6h30 — partir tôt avant la chaleur ! Vélo ~30-50 bahts/jour.',
+       steps:[
+        {t:'6h30',i:'🚲',bg:'#E5F8E0',n:'Location vélo — entrée du parc',d:'~30-50 bahts/jour. Vélos disponibles à l\'entrée. Tout est plat !',a:'Sukhothai Historical Park, Mueang Kao, Sukhothai 64210',m:'https://maps.google.com/?q=Sukhothai+Historical+Park',tags:[['vélo','tgr'],['ouverture 6h30','tor']]},
+        {t:'7h00',i:'🏯',bg:'#FFF0CC',n:'Wat Mahathat — temple principal',d:'Centre du parc, Bouddha en position debout style Sukhothai. Entrée ~100 bahts/zone.',a:'Sukhothai Historical Park, Mueang Kao, Sukhothai 64210',m:'https://maps.google.com/?q=Wat+Mahathat+Sukhothai',tags:[['UNESCO','tor'],['incontournable','tre']]},
+        {t:'9h00',i:'🏛️',bg:'#FFE8E8',n:'Wat Si Chum — Bouddha géant 15m',d:'L\'un des plus beaux Bouddha de Thaïlande, coincé dans un mur étroit.',a:'Sukhothai Historical Park, Mueang Kao, Sukhothai 64210',m:'https://maps.google.com/?q=Wat+Si+Chum+Sukhothai',tags:[['temple','tre'],['photo','tpu']]},
+        {t:'10h30',i:'🚴',bg:'#E5F8E0',n:'Balade à vélo entre les temples',d:'Explorer Wat Sa Si, Wat Trapang Thong, Wat Chana Songkhram. ~3h de vélo.',a:'Sukhothai Historical Park, Mueang Kao, Sukhothai 64210',m:'https://maps.google.com/?q=Sukhothai+Historical+Park',tags:[['vélo','tgr'],['ruines','tre']]},
+        {t:'15h00',i:'⛰️',bg:'#E0F5F3',n:'Wat Saphan Hin — colline panoramique',d:'Temple sur une colline, vue sur la plaine de Sukhothai. Marche ~30 min.',a:'Wat Saphan Hin, Mueang Kao, Sukhothai 64210',m:'https://maps.google.com/?q=Wat+Saphan+Hin+Sukhothai',tags:[['vue','tor']]},
+        {t:'19h00',i:'🌙',bg:'#F0EAFE',n:'Marché nocturne — vieille ville',d:'Marché local, cuisines thaïe du nord, ambiance paisible.',a:'Sukhothai Old Town Night Market, Sukhothai',m:'https://maps.google.com/?q=Sukhothai+Old+Town+Night+Market',tags:[['marché','tgr'],['street food','tor']]}
+       ]},
+      {date:'2',m:'MAI',col:'#E67E22',city:'Sukhothai → Ayutthaya',theme:'Route en van · Arrivée & temples',
+       tip:'💡 Départ 8h-9h — ~4h30 de route pour arriver à midi et profiter de l\'après-midi.',
+       steps:[
+        {t:'8h30',i:'🚐',bg:'#E0F5F3',n:'Départ route Sukhothai → Ayutthaya',d:'~350 km / ~4h30 en van.',a:'Le Charme Sukhothai, Mueang Kao, Sukhothai 64210',m:'https://maps.google.com/?q=Le+Charme+Sukhothai+Historical+Park',tags:[['route','tte'],['~4h30','tor']]},
+        {t:'13h00',i:'🏯',bg:'#FFF0CC',n:'Wat Mahathat — tête dans les racines',d:'LA photo iconique : Bouddha enlacé par les racines de banyan.',a:'Naresuan Rd, Tha Wasukri, Phra Nakhon Si Ayutthaya 13000',m:'https://maps.google.com/?q=Wat+Mahathat+Ayutthaya',tags:[['UNESCO','tor'],['photo','tpu']]},
+        {t:'14h30',i:'🏛️',bg:'#FFE8E8',n:'Wat Phra Si Sanphet — 3 stupas',d:'Les 3 chedis royaux emblématiques, symbole d\'Ayutthaya.',a:'Naresuan Rd, Tha Wasukri, Phra Nakhon Si Ayutthaya 13000',m:'https://maps.google.com/?q=Wat+Phra+Si+Sanphet+Ayutthaya',tags:[['ruines','tre']]},
+        {t:'16h00',i:'🛕',bg:'#F0EAFE',n:'Wat Chaiwatthanaram — style khmer',d:'Temple au bord de la rivière, style khmer. Magnifique au coucher du soleil.',a:'Rotchana Rd, Ban Pom, Phra Nakhon Si Ayutthaya 13000',m:'https://maps.google.com/?q=Wat+Chaiwatthanaram+Ayutthaya',tags:[['style khmer','tpu'],['coucher soleil','tor']]},
+        {t:'19h00',i:'🏨',bg:'#FFE8E8',n:'V House — check-in & dîner',d:'Nuit à Ayutthaya. Dîner en ville. Petit-déjeuner inclus demain matin.',a:'20/5 Moo 4, Tha Wasukri, Phra Nakhon Si Ayutthaya 13000',m:'https://maps.google.com/?q=V+House+Ayutthaya',tags:[['hôtel','tte'],['PDJ inclus','tgr']]}
+       ]}
+    ]
+  },
+  uth:{
+    label:'Ayutthaya', hotel:'uth', jours:1, etapes:0,
+    days:[
+      {date:'3',m:'MAI',col:'#C0392B',city:'Ayutthaya → Bangkok → Koh Samui',theme:'Wat Yai · Vol 14h05 BKK→USM',
+       tip:'⏰ Quitter Ayutthaya à 9h max — Vol BKK→USM à 14h05 !',
+       steps:[
+        {t:'7h00',i:'🌅',bg:'#FFF0CC',n:'Wat Yai Chai Mongkhon — matinée',d:'Grand stupa + Bouddha couché de 7m. Visite matinale avant la chaleur.',a:'Khlong Suan Phlu, Phra Nakhon Si Ayutthaya 13000',m:'https://maps.google.com/?q=Wat+Yai+Chai+Mongkhon+Ayutthaya',tags:[['temple','tre'],['tôt le matin','tor']]},
+        {t:'9h00',i:'🚐',bg:'#E0F5F3',n:'Route Ayutthaya → Bangkok',d:'~80 km / ~1h30 en van. Dépôt van Bangkok 12h30 (Booking 763820483).',a:'Phra Nakhon Si Ayutthaya, Thailand',m:'https://maps.google.com/?q=Ayutthaya+to+Bangkok',tags:[['van','tte'],['~1h30','tgr']]},
+        {t:'11h30',i:'🚕',bg:'#FFF0CC',n:'Taxi aéroport Suvarnabhumi',d:'Depuis Bangkok centre. ~45-60 min selon trafic. Arriver 2h avant le vol.',a:'Suvarnabhumi Airport, Bang Phli, Samut Prakan 10540',m:'https://maps.google.com/?q=Suvarnabhumi+Airport+Bangkok',tags:[['taxi','tte']]},
+        {t:'14h05',i:'✈️',bg:'#E0F5F3',n:'Vol BKK → Koh Samui',d:'Bangkok Airways. Arrivée 15h10. Booking 40-926303956.',a:'Suvarnabhumi Airport, Bang Phli, Samut Prakan 10540',m:'https://maps.google.com/?q=Suvarnabhumi+Airport+Bangkok',tags:[['vol','tte'],['Bangkok Airways','tgr']]},
+        {t:'15h30',i:'🏝️',bg:'#E5F8E0',n:'Arrivée Koh Samui — installation',d:'Taxi aéroport → Airbnb ~20-30 min. Première baignade plage Chaweng !',a:'Koh Samui Airport, Maenam, Koh Samui 84330',m:'https://maps.google.com/?q=Koh+Samui+Airport',tags:[['arrivée','tte'],['plage','tgr']]}
+       ]}
+    ]
+  },
+  usm:{
+    label:'Koh Samui', hotel:'usm', jours:5, etapes:0,
+    days:[
+      {date:'4',m:'MAI',col:'#1ABC9C',city:'Koh Samui — temples & nature',theme:'Big Buddha · Cascades · Plage Lamai',
+       tip:'💡 Big Buddha + Wat Plai Laem tôt (7h-8h) — moins chaud, moins de touristes.',
+       steps:[
+        {t:'7h00',i:'🛕',bg:'#FFF0CC',n:'Big Buddha — Wat Phra Yai',d:'Bouddha de 12m dominant la mer. Vue superbe le matin.',a:'Ko Fan, Koh Samui, Surat Thani 84320',m:'https://maps.google.com/?q=Big+Buddha+Koh+Samui',tags:[['temple','tre'],['vue','tor']]},
+        {t:'8h30',i:'🏛️',bg:'#FFE8E8',n:'Wat Plai Laem — Guanyin 18 bras',d:'Statue de la déesse Guanyin à 18 bras sur l\'eau. Très photogénique.',a:'Wat Plai Laem, Koh Samui, Surat Thani 84320',m:'https://maps.google.com/?q=Wat+Plai+Laem+Koh+Samui',tags:[['temple','tre'],['photo','tpu']]},
+        {t:'10h30',i:'🌊',bg:'#E5F8E0',n:'Cascades de Na Muang + baignade',d:'Randonnée ~1h dans la jungle. Baignade dans les piscines naturelles.',a:'Na Muang Waterfall, Koh Samui, Surat Thani 84140',m:'https://maps.google.com/?q=Na+Muang+Waterfall+Koh+Samui',tags:[['nature','tgr'],['baignade','tte']]},
+        {t:'14h00',i:'🏖️',bg:'#E0F5F3',n:'Plage de Lamai + Hin Ta & Hin Yai',d:'Belle plage + rochers grand-père/grand-mère. Curiosité naturelle insolite.',a:'Lamai Beach, Koh Samui, Surat Thani 84310',m:'https://maps.google.com/?q=Lamai+Beach+Koh+Samui',tags:[['plage','tte'],['insolite','tpu']]},
+        {t:'17h30',i:'🌅',bg:'#FFF0CC',n:'Coucher de soleil côte ouest',d:'Lipa Noi ou Taling Ngam — les meilleurs spots coucher de soleil de l\'île.',a:'Lipa Noi Beach, Koh Samui, Surat Thani 84140',m:'https://maps.google.com/?q=Lipa+Noi+Beach+Koh+Samui',tags:[['coucher soleil','tor']]}
+       ]},
+      {date:'5',m:'MAI',col:'#3498DB',city:'Koh Samui — farniente 🌴',theme:'Chaweng Beach · Massage · Sunset',
+       tip:'💡 Journée libre ! Bronzage, sports nautiques ou exploration en scooter.',
+       steps:[
+        {t:'9h00',i:'🏖️',bg:'#E0F5F3',n:'Plage de Chaweng — baignade',d:'6 km de sable blanc, la plus grande plage de l\'île. Sports nautiques disponibles.',a:'Chaweng Beach, Koh Samui, Surat Thani 84320',m:'https://maps.google.com/?q=Chaweng+Beach+Koh+Samui',tags:[['plage','tte'],['bronzage','tor']]},
+        {t:'12h30',i:'🦞',bg:'#E5F8E0',n:'Déjeuner fruits de mer en bord de mer',d:'Homard, crevettes, poissons grillés au poids. Nombreux restos sur la plage.',a:'Chaweng Beach Rd, Koh Samui, Surat Thani 84320',m:'https://maps.google.com/?q=Chaweng+Beach+Road+Koh+Samui',tags:[['fruits de mer','tgr']]},
+        {t:'15h00',i:'💆',bg:'#F0EAFE',n:'Massage thaï',d:'1h à 2h. Nombreux spas autour de Chaweng ~300-600 bahts/h.',a:'Chaweng Beach Rd, Koh Samui, Surat Thani 84320',m:'https://maps.google.com/?q=Chaweng+Beach+Koh+Samui',tags:[['massage','tgr'],['détente','tte']]},
+        {t:'18h00',i:'🌅',bg:'#FFF0CC',n:'Apéro sunset sur la plage',d:'Ambiance magique au coucher du soleil avec cocktail les pieds dans le sable.',a:'Chaweng Beach, Koh Samui, Surat Thani 84320',m:'https://maps.google.com/?q=Chaweng+Beach+Koh+Samui',tags:[['coucher soleil','tor'],['cocktails','tpu']]}
+       ]},
+      {date:'6',m:'MAI',col:'#27AE60',city:'Koh Samui — parc Ang Thong',theme:'Excursion journée complète ⚠️ RÉSERVER',
+       tip:'⚠️ RÉSERVER À L\'AVANCE — places très limitées ! Départ très tôt le matin.',
+       steps:[
+        {t:'7h00',i:'🚤',bg:'#E0F5F3',n:'Départ speed boat — parc Ang Thong',d:'Archipel de 42 îles à ~1h de Koh Samui. Journée organisée.',a:'Na Thon Pier, Koh Samui, Surat Thani 84140',m:'https://maps.google.com/?q=Na+Thon+Pier+Koh+Samui',tags:[['excursion','tte'],['réserver !','tre']]},
+        {t:'9h00',i:'🏔️',bg:'#E5F8E0',n:'Lac marin émeraude — Ko Mae Ko',d:'Randonnée jusqu\'au sommet. Vue plongeante sur le lac d\'émeraude. Exceptionnel.',a:'Ko Mae Ko, Ang Thong National Marine Park',m:'https://maps.google.com/?q=Ang+Thong+National+Marine+Park',tags:[['incontournable','tre'],['randonnée','tgr']]},
+        {t:'11h30',i:'🤿',bg:'#E0F5F3',n:'Kayak & snorkeling inter-îles',d:'3h de kayak entre les îles. Snorkeling sur les récifs coralliens.',a:'Ang Thong National Marine Park, Surat Thani',m:'https://maps.google.com/?q=Ang+Thong+National+Marine+Park',tags:[['kayak','tte'],['snorkeling','tgr']]},
+        {t:'17h00',i:'🌅',bg:'#FFF0CC',n:'Retour + apéro sunset',d:'Retour en speed boat. Coucher de soleil depuis la plage.',a:'Chaweng Beach, Koh Samui, Surat Thani 84320',m:'https://maps.google.com/?q=Chaweng+Beach+Koh+Samui',tags:[['coucher soleil','tor']]}
+       ]},
+      {date:'7',m:'MAI',col:'#8E44AD',city:'Koh Samui — plage secrète',theme:'Coral Cove · Magic Garden · Dîner adieu',
+       tip:'💡 Secret Buddha Garden : piste escarpée — prendre un 4x4 ou taxi de l\'hôtel.',
+       steps:[
+        {t:'8h00',i:'🌊',bg:'#E0F5F3',n:'Coral Cove Beach — snorkeling',d:'La plus belle plage de Samui. Eau turquoise, peu fréquentée, idéale pour snorkeling.',a:'Coral Cove Beach, Koh Samui, Surat Thani 84320',m:'https://maps.google.com/?q=Coral+Cove+Beach+Koh+Samui',tags:[['plage','tte'],['snorkeling','tgr']]},
+        {t:'11h00',i:'🗿',bg:'#F0EAFE',n:'Secret Buddha Garden — Magic Garden',d:'Jardin mystérieux en altitude dans la jungle. Statues en pierre, vue panoramique. 4x4 recommandé.',a:'Secret Buddha Garden, Na Mueang, Koh Samui 84140',m:'https://maps.google.com/?q=Secret+Buddha+Garden+Koh+Samui',tags:[['insolite','tpu'],['4x4','tor']]},
+        {t:'14h00',i:'💆',bg:'#E5F8E0',n:'Dernier massage thaï',d:'Profiter une dernière fois des massages à prix thaïlandais !',a:'Chaweng Beach Rd, Koh Samui, Surat Thani 84320',m:'https://maps.google.com/?q=Chaweng+Beach+Koh+Samui',tags:[['massage','tgr']]},
+        {t:'16h00',i:'🛍️',bg:'#FFF0CC',n:'Shopping souvenirs — Chaweng',d:'Derniers achats : épices, soieries, statuettes, vêtements.',a:'Chaweng Beach Rd, Koh Samui, Surat Thani 84320',m:'https://maps.google.com/?q=Chaweng+Market+Koh+Samui',tags:[['shopping','tor']]},
+        {t:'19h30',i:'🦞',bg:'#FFE8E8',n:'Dîner d\'adieu — pieds dans le sable',d:'Restaurant en bord de mer, vue mer. La dernière soirée ensemble... savourez !',a:'Chaweng Beach, Koh Samui, Surat Thani 84320',m:'https://maps.google.com/?q=Chaweng+Beach+Koh+Samui',tags:[['dîner adieu','tre']]}
+       ]}
+    ]
+  },
+  bkk2:{
+    label:'BKK Retour', hotel:'bkk2', jours:1, etapes:0,
+    days:[
+      {date:'8',m:'MAI',col:'#95A5A6',city:'Koh Samui → Bangkok',theme:'Vol retour · Dernière nuit',
+       tip:'⏰ Vol USM→BKK à 15h50 — taxi aéroport 2h avant. Navette gratuite hôtel ↔ BKK aéroport.',
+       steps:[
+        {t:'7h00',i:'🌅',bg:'#FFF0CC',n:'Lever de soleil à Chaweng Beach',d:'Dernier matin. Bain, petit-déj en bord de mer. Lumière magique au lever.',a:'Chaweng Beach, Koh Samui, Surat Thani 84320',m:'https://maps.google.com/?q=Chaweng+Beach+Koh+Samui',tags:[['dernier matin','tor']]},
+        {t:'9h00',i:'🛍️',bg:'#E5F8E0',n:'Marché de Bangrak — souvenirs',d:'Marché local côte nord : poissons frais, fruits, souvenirs moins touristiques.',a:'Bangrak Market, Koh Samui, Surat Thani 84320',m:'https://maps.google.com/?q=Bangrak+Market+Koh+Samui',tags:[['marché','tgr'],['local','tgr']]},
+        {t:'13h30',i:'🚕',bg:'#E0F5F3',n:'Check-out + taxi aéroport Koh Samui',d:'~20-30 min depuis Chaweng. Arriver 2h avant le vol.',a:'Koh Samui Airport, Maenam, Koh Samui 84330',m:'https://maps.google.com/?q=Koh+Samui+Airport',tags:[['taxi','tte']]},
+        {t:'15h50',i:'✈️',bg:'#E0F5F3',n:'Vol USM → Bangkok',d:'Bangkok Airways. Arrivée 17h05. Booking 40-926303956.',a:'Koh Samui Airport, Maenam, Koh Samui 84330',m:'https://maps.google.com/?q=Koh+Samui+Airport',tags:[['vol','tte'],['Bangkok Airways','tgr']]},
+        {t:'17h30',i:'🏨',bg:'#FFE8E8',n:'The Park Nine Suvarnabhumi — check-in',d:'Navette gratuite depuis l\'aéroport BKK. Dernière nuit avant les vols retour.',a:'99 Moo 6, Bang Phli, Samut Prakan 10540',m:'https://maps.google.com/?q=The+Park+Nine+Hotel+Suvarnabhumi+Bangkok',tags:[['hôtel','tte'],['navette gratuite','tgr']]}
+       ]}
+    ]
+  }
+};
+
+var curCity='bkk';
+
+function tg(id,cls){var e=document.getElementById(id);if(e)e.classList.toggle(cls);}
+function toggleAddr(id){tg('ad-'+id,'op');tg('aa-'+id,'op');}
+function toggleDay(id){tg('ds-'+id,'op');tg('dc-'+id,'op');}
+function toggleHotel(c){tg('hd-'+c,'op');tg('ha-'+c,'op');}
+function toggleStep(id){
+  CK[id]=!CK[id];
+  var el=document.getElementById('st-'+id),btn=document.getElementById('ck-'+id);
+  if(CK[id]){el.classList.add('done');btn.classList.add('done');btn.textContent='✓';}
+  else{el.classList.remove('done');btn.classList.remove('done');btn.textContent='';}
+  var done=Object.values(CK).filter(Boolean).length;
+  document.getElementById('prog').textContent=done+' / '+TOTAL_STEPS;
+}
+
+function makeCityTabs(){
+  var keys=['bkk','cnx','skt','uth','usm','bkk2'];
+  return '<div class="ctabs">'+keys.map(function(k){
+    return '<button class="ctab'+(k===curCity?' active':'')+'" onclick="showCity(\''+k+'\')">'+CITIES_DATA[k].label+'</button>';
+  }).join('')+'</div>';
+}
+
+function showCity(city){
+  curCity=city;
+  var d=CITIES_DATA[city];
+  if(d.coming){renderComing(city);}
+  else{renderCity(city);}
+}
+
+function makeHotelCard(city, h){
+  var bfRow = h.breakfast
+    ? '<div class="hrow"><div class="hrow-icon" style="background:#E5F8E0">☕</div><div class="hrow-body"><div class="hrow-label">Petit-déjeuner</div><div class="hrow-val green">Inclus ✓</div></div></div>'
+    : '<div class="hrow"><div class="hrow-icon" style="background:#FFE8E8">🚫</div><div class="hrow-body"><div class="hrow-label">Petit-déjeuner</div><div class="hrow-val red">Non inclus</div></div></div>';
+  var bkgRow = h.booking
+    ? '<div class="hrow"><div class="hrow-icon" style="background:#E0F5F3">🔖</div><div class="hrow-body"><div class="hrow-label">Réservation</div><div class="hrow-val">'+h.booking+'</div></div></div>'
+    : '';
+  return '<div class="hbanner" onclick="toggleHotel(\''+city+'\')">'
+    +'<div style="font-size:20px">🏨</div>'
+    +'<div style="flex:1;min-width:0"><div class="hname">'+h.name+'</div><div class="hsub">'+h.nuits+' · '+h.dates+'</div></div>'
+    +'<div class="harr" id="ha-'+city+'">›</div>'
+    +'</div>'
+    +'<div class="hdetail" id="hd-'+city+'">'
+    +'<div class="hrow"><div class="hrow-icon" style="background:#F0EAFE">🏩</div><div class="hrow-body"><div class="hrow-label">Hébergement</div><div class="hrow-val">'+h.name+'</div></div></div>'
+    +'<div class="hrow"><div class="hrow-icon" style="background:#FFF0CC">📅</div><div class="hrow-body"><div class="hrow-label">Dates</div><div class="hrow-val">'+h.dates+'</div></div></div>'
+    +'<div class="hrow"><div class="hrow-icon" style="background:#E0F5F3">🌙</div><div class="hrow-body"><div class="hrow-label">Durée</div><div class="hrow-val">'+h.nuits+'</div></div></div>'
+    +bfRow
+    +bkgRow
+    +'<div class="hrow"><div class="hrow-icon" style="background:#FFE8E8">📍</div><div class="hrow-body"><div class="hrow-label">Adresse</div><div class="hrow-val">'+h.addr+'</div><a href="'+h.maps+'" target="_blank" class="mbtn">Ouvrir dans Maps</a></div></div>'
+    +'</div>';
+}
+
+function renderComing(city){
+  var d=CITIES_DATA[city];
+  var h=HOTELS[d.hotel];
+  var html='<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;"><button onclick="renderMap()" style="background:rgba(255,255,255,0.2);border:none;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;color:white;cursor:pointer;font-family:Nunito,sans-serif;">&#8249; Carte</button></div>';
+  html+=makeCityTabs();
+  html+=makeHotelCard(city,h);
+  html+='<div class="coming">'
+    +'<div style="font-size:36px;margin-bottom:10px">🔜</div>'
+    +'<div class="ctitle2">'+d.label+'</div>'
+    +'<div class="csub">'+d.comingDesc.replace('\n','<br>')+'</div>'
+    +'<button style="background:#2BBFB3;color:white;border:none;border-radius:20px;padding:9px 22px;font-size:12px;font-weight:800;cursor:pointer;font-family:Nunito,sans-serif;">Bientôt disponible !</button>'
+    +'</div>';
+  document.getElementById('content').innerHTML=html;
+  document.querySelectorAll('.city-pin').forEach(function(g){
+    g.style.cursor='pointer';
+    g.addEventListener('click', function(){
+      goCity(this.getAttribute('data-city'));
+    });
+  });
+}
+
+function renderCity(city){
+  var d=CITIES_DATA[city];
+  var h=HOTELS[d.hotel];
+  var html=makeCityTabs();
+  var totalSteps=0;
+  d.days.forEach(function(day){totalSteps+=day.steps.length;});
+  html+='<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">'
+    +'<button onclick="renderMap()" style="background:rgba(255,255,255,0.2);border:none;border-radius:20px;padding:6px 14px;font-size:12px;font-weight:700;color:white;cursor:pointer;font-family:Nunito,sans-serif;flex-shrink:0;">‹ Carte</button>'
+    +'<div class="sumbar" style="flex:1;margin-bottom:0;padding:10px 12px;">'
+    +'<div><div class="sv">'+d.jours+'</div><div class="sl">jours</div></div>'
+    +'<div class="sdiv"></div>'
+    +'<div><div class="sv">'+totalSteps+'</div><div class="sl">étapes</div></div>'
+    +'</div>'
+    +'</div>';
+  html+=makeHotelCard(city,h);
+  d.days.forEach(function(day,di){
+    var did=city+'_'+di;
+    html+='<div class="dcard">'
+      +'<div class="dhead" onclick="toggleDay(\''+did+'\')">'
+      +'<div class="dbadge" style="background:'+day.col+'"><div class="n">'+day.date+'</div><div class="m">'+day.m+'</div></div>'
+      +'<div class="dinfo"><div class="dcity">'+day.city+'</div><div class="dtheme">'+day.theme+'</div></div>'
+      +'<div class="dchev" id="dc-'+did+'">›</div>'
+      +'</div>'
+      +'<div class="dsteps" id="ds-'+did+'">'
+      +'<div class="tip">'+day.tip+'</div>';
+    day.steps.forEach(function(s,si){
+      var sid=city+'_'+di+'_'+si;
+      var tags=(s.tags||[]).map(function(t){return '<span class="tag '+t[1]+'">'+t[0]+'</span>';}).join('');
+      html+='<div class="step" id="st-'+sid+'">'
+        +'<div class="sleft"><div class="stime">'+s.t+'</div><div class="sicon" style="background:'+s.bg+'">'+s.i+'</div><div class="sline"></div></div>'
+        +'<div class="sbody">'
+        +'<div class="sname">'+s.n+'</div>'
+        +'<div class="sdesc">'+s.d+'</div>'
+        +(tags?'<div class="stags">'+tags+'</div>':'')
+        +'<div class="arow" onclick="toggleAddr(\''+sid+'\')">'
+        +'<span class="aarr" id="aa-'+sid+'">▸</span>'
+        +'<span style="font-size:11px;color:#2BBFB3;font-weight:700;">Adresse & Maps</span>'
+        +'</div>'
+        +'<div class="adetail" id="ad-'+sid+'">'
+        +'<div class="atext">📍 '+s.a+'</div>'
+        +'<a href="'+s.m+'" target="_blank" class="amaps">Ouvrir dans Maps</a>'
+        +'</div>'
+        +'</div>'
+        +'<button class="chk" id="ck-'+sid+'" onclick="toggleStep(\''+sid+'\')"></button>'
+        +'</div>';
+    });
+    html+='</div></div>';
+  });
+  document.getElementById('content').innerHTML=html;
+}
+
+function renderTransport(){
+  var html=
+  '<div class="tsec">✈️ Tribu Kalpers — aller</div>'
+  +'<div class="tcard">'
+  +'<div class="tchdr"><div class="ttribe"><div class="ticon2" style="background:#E0F5F3">🧳</div><div><div class="tname2">Tribu Kalpers</div><div class="tsub2b">Bruxelles → Abu Dhabi → Bangkok</div></div></div><div class="tnum">7D7EY</div></div>'
+  +'<div class="troute"><div class="tcity"><div class="tcode">BRU</div><div class="tcname">Bruxelles</div><div class="ttime">09h55</div><div class="tdate">23 avril</div></div>'
+  +'<div class="tmid"><div class="tdur">~9h35</div><div class="tlw"><div class="tl"></div><div class="tp">✈</div><div class="tl"></div></div><div class="tstop">Escale AUH</div></div>'
+  +'<div class="tcity r"><div class="tcode">AUH</div><div class="tcname">Abu Dhabi</div><div class="ttime">19h30</div><div class="tdate">23 avril</div></div></div>'
+  +'<div class="troute" style="border-top:1.5px dashed #E8F5F4;padding-top:10px">'
+  +'<div class="tcity"><div class="tcode">AUH</div><div class="tcname">Abu Dhabi</div><div class="ttime">21h10</div><div class="tdate">23 avril</div></div>'
+  +'<div class="tmid"><div class="tdur">~9h35</div><div class="tlw"><div class="tl"></div><div class="tp">✈</div><div class="tl"></div></div></div>'
+  +'<div class="tcity r"><div class="tcode">BKK</div><div class="tcname">Bangkok</div><div class="ttime">06h45</div><div class="tdate">24 avril</div></div></div>'
+  +'<div class="tfoot"><span class="tag tte">Etihad Airways</span><span class="tag tor">Via Abu Dhabi</span><span class="tag tpu">Code 7D7EY</span></div>'
+  +'</div>'
+
+  +'<div class="tcard">'
+  +'<div class="tchdr"><div class="ttribe"><div class="ticon2" style="background:#FFF0CC">🚐</div><div><div class="tname2">Transfert aéroport → hôtel</div><div class="tsub2b">Bangkok BKK → Time Sabai · Van privé</div></div></div><div class="tnum">Van</div></div>'
+  +'<div class="troute"><div class="tcity"><div class="tcode">BKK</div><div class="tcname">Aéroport</div><div class="ttime">07h30</div><div class="tdate">24 avril</div></div>'
+  +'<div class="tmid"><div class="tdur">~45 min</div><div class="tlw"><div class="tl"></div><div class="tp">🚐</div><div class="tl"></div></div></div>'
+  +'<div class="tcity r"><div class="tcode">HTL</div><div class="tcname">Time Sabai</div><div class="ttime">~08h15</div><div class="tdate">24 avril</div></div></div>'
+  +'<div class="tfoot"><span class="tbkg">Booking : 625901398</span></div>'
+  +'</div>'
+
+  +'<div class="tsec">👴👵 Papy & Maminou — aller</div>'
+  +'<div class="tcard">'
+  +'<div class="tchdr"><div class="ttribe"><div class="ticon2" style="background:#FFF0CC">🌟</div><div><div class="tname2">Papy & Maminou</div><div class="tsub2b">Francfort → Bangkok · Condor</div></div></div><div class="pnr">PNR 14819036</div></div>'
+  +'<div class="troute"><div class="tcity"><div class="tcode">FRA</div><div class="tcname">Francfort</div><div class="ttime">20h15</div><div class="tdate">23 avril</div></div>'
+  +'<div class="tmid"><div class="tdur">11h20</div><div class="tlw"><div class="tl"></div><div class="tp">✈</div><div class="tl"></div></div></div>'
+  +'<div class="tcity r"><div class="tcode">BKK</div><div class="tcname">Bangkok</div><div class="ttime">12h35</div><div class="tdate">24 avril</div></div></div>'
+  +'<div class="tfoot"><span class="tag tor">Condor DE 2360</span><span class="tag tgr">Économique</span><span class="tag tpu">PNR 14819036</span></div>'
+  +'</div>'
+
+  +'<div class="tsec">🚂 Train de nuit — Bangkok → Chiang Mai</div>'
+  +'<div class="tcard">'
+  +'<div class="trhhdr"><div class="trhlbl">🚂 Train de nuit — couchette 2e cl.</div><div class="trhnum">Réservé ✓</div></div>'
+  +'<div class="irow"><div class="iic">📍</div><div class="ib"><div class="ilbl">Départ</div><div class="ival">Gare Krung Thep Aphiwat</div></div><div style="text-align:right"><div class="ilbl">Heure</div><div class="ival hi">18h40</div></div></div>'
+  +'<div class="irow"><div class="iic">🏁</div><div class="ib"><div class="ilbl">Arrivée</div><div class="ival">Gare Chiang Mai</div></div><div style="text-align:right"><div class="ilbl">Heure</div><div class="ival hi">07h15</div></div></div>'
+  +'<div class="irow"><div class="iic">📅</div><div class="ib"><div class="ilbl">Date</div><div class="ival">Dimanche 27 avril</div></div><div style="text-align:right"><div class="ilbl">Durée</div><div class="ival">~12h35</div></div></div>'
+  +'<div style="padding:8px 14px 12px"><div class="tip">⏰ Taxi gare à 17h30 max — depuis Thonburi après le marché flottant !</div></div>'
+  +'</div>'
+
+  +'<div class="tsec">🚐 Van — location Chiang Mai</div>'
+  +'<div class="tcard">'
+  +'<div class="tchdr"><div class="ttribe"><div class="ticon2" style="background:#E0F5F3">🚐</div><div><div class="tname2">Location van — toute la tribu</div><div class="tsub2b">Retrait aéroport Chiang Mai → Dépôt BKK</div></div></div><div class="tnum">763820483</div></div>'
+  +'<div class="irow"><div class="iic">🔑</div><div class="ib"><div class="ilbl">Retrait</div><div class="ival">Aéroport Chiang Mai · 30 avril 9h30</div></div></div>'
+  +'<div class="irow"><div class="iic">📍</div><div class="ib"><div class="ilbl">Dépôt</div><div class="ival">Bangkok · 3 mai 12h30</div></div></div>'
+  +'<div class="tfoot"><span class="tbkg">Drive Car Rental · Booking : 763820483</span></div>'
+  +'</div>'
+
+  +'<div class="tsec">✈️ Vol intérieur — Bangkok → Koh Samui</div>'
+  +'<div class="tcard">'
+  +'<div class="tchdr"><div class="ttribe"><div class="ticon2" style="background:#E5F8E0">🏝️</div><div><div class="tname2">Bangkok → Koh Samui</div><div class="tsub2b">Bangkok Airways — toute la tribu</div></div></div><div class="tnum">BKK</div></div>'
+  +'<div class="troute"><div class="tcity"><div class="tcode">BKK</div><div class="tcname">Bangkok</div><div class="ttime">14h05</div><div class="tdate">3 mai</div></div>'
+  +'<div class="tmid"><div class="tdur">~1h05</div><div class="tlw"><div class="tl"></div><div class="tp">✈</div><div class="tl"></div></div></div>'
+  +'<div class="tcity r"><div class="tcode">USM</div><div class="tcname">Koh Samui</div><div class="ttime">15h10</div><div class="tdate">3 mai</div></div></div>'
+  +'<div class="tfoot"><span class="tag tgr">Bangkok Airways</span><span class="tbkg">Booking : 40-926303956</span></div>'
+  +'</div>'
+
+  +'<div class="tsec">🏠 Vols retour — Tribu Kalpers</div>'
+  +'<div class="tcard">'
+  +'<div class="tchdr"><div class="ttribe"><div class="ticon2" style="background:#E0F5F3">🧳</div><div><div class="tname2">Tribu Kalpers — retour</div><div class="tsub2b">Koh Samui → Bangkok → Abu Dhabi → BRU</div></div></div><div class="tnum">7D7EY</div></div>'
+  +'<div class="troute"><div class="tcity"><div class="tcode">USM</div><div class="tcname">Koh Samui</div><div class="ttime">15h50</div><div class="tdate">8 mai</div></div>'
+  +'<div class="tmid"><div class="tdur">~1h15</div><div class="tlw"><div class="tl"></div><div class="tp">✈</div><div class="tl"></div></div></div>'
+  +'<div class="tcity r"><div class="tcode">BKK</div><div class="tcname">Bangkok</div><div class="ttime">17h05</div><div class="tdate">8 mai</div></div></div>'
+  +'<div class="troute" style="border-top:1.5px dashed #E8F5F4;padding-top:10px">'
+  +'<div class="tcity"><div class="tcode">BKK</div><div class="tcname">Bangkok</div><div class="ttime">09h15</div><div class="tdate">9 mai</div></div>'
+  +'<div class="tmid"><div class="tdur">~6h30</div><div class="tlw"><div class="tl"></div><div class="tp">✈</div><div class="tl"></div></div><div class="tstop">Escale AUH</div></div>'
+  +'<div class="tcity r"><div class="tcode">AUH</div><div class="tcname">Abu Dhabi</div><div class="ttime">12h35</div><div class="tdate">9 mai</div></div></div>'
+  +'<div class="troute" style="border-top:1.5px dashed #E8F5F4;padding-top:10px">'
+  +'<div class="tcity"><div class="tcode">AUH</div><div class="tcname">Abu Dhabi</div><div class="ttime">02h05</div><div class="tdate">10 mai</div></div>'
+  +'<div class="tmid"><div class="tdur">~6h</div><div class="tlw"><div class="tl"></div><div class="tp">✈</div><div class="tl"></div></div></div>'
+  +'<div class="tcity r"><div class="tcode">BRU</div><div class="tcname">Bruxelles</div><div class="ttime">07h05</div><div class="tdate">10 mai</div></div></div>'
+  +'<div class="tfoot"><span class="tag tte">Etihad Airways</span><span class="tag tor">Via Abu Dhabi</span><span class="tag tpu">Code 7D7EY</span></div>'
+  +'</div>'
+
+  +'<div class="tsec">🏠 Vols retour — Papy & Maminou</div>'
+  +'<div class="tcard">'
+  +'<div class="tchdr"><div class="ttribe"><div class="ticon2" style="background:#FFF0CC">🌟</div><div><div class="tname2">Papy & Maminou — retour</div><div class="tsub2b">Bangkok → Francfort · Condor</div></div></div><div class="pnr">PNR 14819036</div></div>'
+  +'<div class="troute"><div class="tcity"><div class="tcode">BKK</div><div class="tcname">Bangkok</div><div class="ttime">22h35</div><div class="tdate">10 mai</div></div>'
+  +'<div class="tmid"><div class="tdur">12h25</div><div class="tlw"><div class="tl"></div><div class="tp">✈</div><div class="tl"></div></div></div>'
+  +'<div class="tcity r"><div class="tcode">FRA</div><div class="tcname">Francfort</div><div class="ttime">06h00</div><div class="tdate">11 mai</div></div></div>'
+  +'<div class="tfoot"><span class="tag tor">Condor DE 2367</span><span class="tag tgr">Économique</span><span class="tag tpu">PNR 14819036</span></div>'
+  +'</div>';
+
+  document.getElementById('content').innerHTML=html;
+}
+
+function renderMap(){
+  var html='<div style="padding:4px 0 10px">'
+    +'<div style="font-size:11px;color:rgba(255,255,255,0.75);font-weight:700;text-align:center;margin-bottom:8px;letter-spacing:1px;text-transform:uppercase;">Appuie sur une ville pour voir son programme</div>'
+    +'<div style="position:relative;width:100%;max-width:340px;margin:0 auto;">'
+    +'<svg viewBox="0 0 340 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">'+'<rect width="340" height="560" fill="none"/><path d="M70.5,8.0 L62.8,12.9 L49.3,20.7 L33.0,28.4 L28.2,36.2 L23.4,44.0 L18.6,51.8 L13.8,59.6 L9.0,67.4 L9.9,75.1 L11.8,82.9 L12.8,90.7 L14.7,98.5 L18.6,106.3 L26.3,114.1 L31.1,121.9 L34.0,129.6 L39.7,137.4 L44.5,145.2 L40.7,153.0 L37.8,160.8 L35.9,168.6 L33.0,176.4 L26.3,184.1 L24.3,191.9 L25.3,199.7 L27.2,207.5 L31.1,215.3 L36.8,223.1 L45.5,230.9 L57.0,238.6 L69.5,246.4 L77.2,254.2 L77.2,262.0 L76.3,269.8 L78.2,277.6 L80.1,285.4 L80.1,293.1 L79.1,300.9 L81.1,308.7 L84.9,316.5 L88.8,324.3 L92.6,332.1 L92.6,339.8 L85.9,347.6 L83.0,355.4 L80.1,363.2 L76.3,371.0 L73.4,378.8 L71.5,386.6 L71.5,394.3 L70.5,402.1 L68.6,409.9 L63.8,417.7 L60.9,425.5 L60.9,433.3 L61.8,441.1 L62.8,448.8 L66.6,456.6 L75.3,464.4 L92.6,472.2 L97.4,480.0 L107.0,487.8 L119.5,495.6 L125.3,503.3 L150.3,511.1 L171.4,518.9 L175.3,526.7 L175.3,534.5 L173.4,542.3 L175.3,549.1 L203.2,549.1 L222.4,542.3 L229.1,534.5 L231.1,526.7 L229.1,518.9 L223.4,511.1 L216.6,503.3 L208.0,495.6 L185.9,487.8 L178.2,480.0 L176.2,472.2 L173.4,464.4 L167.6,456.6 L158.0,448.8 L151.3,441.1 L148.4,433.3 L143.6,425.5 L127.2,417.7 L115.7,409.9 L113.8,402.1 L106.1,394.3 L104.1,386.6 L109.9,378.8 L111.8,371.0 L110.9,363.2 L111.8,355.4 L114.7,347.6 L112.8,339.8 L108.9,332.1 L117.6,324.3 L121.4,316.5 L127.2,308.7 L137.8,300.9 L201.2,293.1 L233.9,285.4 L233.9,277.6 L230.1,269.8 L223.4,262.0 L222.4,254.2 L233.9,246.4 L226.2,238.6 L185.9,230.9 L226.2,223.1 L307.0,215.3 L321.4,207.5 L325.3,199.7 L328.2,191.9 L330.1,184.1 L331.0,176.4 L332.0,168.6 L331.0,160.8 L327.2,153.0 L316.6,145.2 L284.9,137.4 L281.0,129.6 L299.3,121.9 L299.3,114.1 L300.3,106.3 L300.3,98.5 L298.4,90.7 L294.5,82.9 L288.7,75.1 L279.1,67.4 L207.0,59.6 L162.8,51.8 L141.6,44.0 L124.3,36.2 L122.4,28.4 L119.5,20.7 L113.8,12.9 L107.0,8.0 Z" fill="#E8F9F7" stroke="#2BBFB3" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/><polyline points="72.4,68.8 104.1,132.1 132.6,226.3 130.7,295.0 123.2,397.7" fill="none" stroke="#E8837A" stroke-width="2.5" stroke-dasharray="6,5" opacity="0.8"/><g data-city="cnx" class="city-pin"><circle cx="72.4" cy="68.8" r="8" fill="#C0392B"/><circle cx="72.4" cy="68.8" r="4" fill="white"/><rect x="86.4" y="54.8" width="130" height="28" rx="14" fill="#E8837A"/><text x="94.4" y="73.8" font-family="Bubblegum Sans,cursive" font-size="13" fill="white">Chiang Mai 🐘</text></g><g data-city="skt" class="city-pin"><circle cx="104.1" cy="132.1" r="8" fill="#C0392B"/><circle cx="104.1" cy="132.1" r="4" fill="white"/><rect x="118.1" y="118.1" width="130" height="28" rx="14" fill="#E8837A"/><text x="126.1" y="137.1" font-family="Bubblegum Sans,cursive" font-size="13" fill="white">Sukhothai 🏯</text></g><g data-city="uth" class="city-pin"><circle cx="132.6" cy="226.3" r="8" fill="#C0392B"/><circle cx="132.6" cy="226.3" r="4" fill="white"/><rect x="146.6" y="212.3" width="130" height="28" rx="14" fill="#E8837A"/><text x="154.6" y="231.3" font-family="Bubblegum Sans,cursive" font-size="13" fill="white">Ayutthaya 🏛️</text></g><g data-city="bkk" class="city-pin"><circle cx="130.7" cy="295.0" r="8" fill="#C0392B"/><circle cx="130.7" cy="295.0" r="4" fill="white"/><rect x="144.7" y="281.0" width="130" height="28" rx="14" fill="#E8837A"/><text x="152.7" y="300.0" font-family="Bubblegum Sans,cursive" font-size="13" fill="white">Bangkok 🏙️</text></g><g data-city="usm" class="city-pin"><circle cx="123.2" cy="397.7" r="8" fill="#C0392B"/><circle cx="123.2" cy="397.7" r="4" fill="white"/><rect x="137.2" y="383.7" width="130" height="28" rx="14" fill="#E8837A"/><text x="145.2" y="402.7" font-family="Bubblegum Sans,cursive" font-size="13" fill="white">Koh Samui 🏝️</text></g><text x="28" y="38" font-size="22" transform="rotate(-30,28,38)" opacity="0.85">✈️</text>'+'</svg>'
+    +'</div>'
+    +'</div>';
+  document.getElementById('content').innerHTML=html;
+  document.querySelectorAll('.city-pin').forEach(function(g){
+    g.style.cursor='pointer';
+    g.addEventListener('click', function(){
+      goCity(this.getAttribute('data-city'));
+    });
+  });
+}
+
+function goCity(city){
+  curCity=city;
+  document.querySelectorAll('.mtab').forEach(function(t){t.classList.remove('active');});
+  document.querySelector('.mtab').classList.add('active');
+  var d=CITIES_DATA[city];
+  if(d.coming){renderComing(city);}else{renderCity(city);}
+}
+
+function showMain(tab,btn){
+  document.querySelectorAll('.mtab').forEach(function(t){t.classList.remove('active');});
+  btn.classList.add('active');
+  if(tab==='transport'){renderTransport();}
+  else{curCity='bkk';renderMap();}
+}
+
+renderMap();
+</script>
+</body>
+</html>
